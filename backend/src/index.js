@@ -1,14 +1,20 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
 
 const app = express();
 
 const uri = process.env.MONGO_URL;
 mongoose.connect(uri, { useNewUrlParser: true });
 
-app.use(require("./routes"));
+app.use(cors('*'));
+
+app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads', 'resized')));
+
+app.use(require('./routes'));
 
 app.listen(3333, () => {
-  console.log("Listen to por 3333");
+  console.log('Listen to por 3333');
 });
